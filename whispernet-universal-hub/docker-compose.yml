@@ -1,0 +1,44 @@
+
+version: '3'
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - CPM_URL=http://cross-platform-messaging:8010
+      - AI_INBOX_URL=http://smart-ai-inbox:8011
+      - ONE_CLICK_URL=http://one-click-reply:8012
+      - VOICE_URL=http://voice-to-everything:8013
+      - TRANSLATE_URL=http://multilingual-auto-translate:8014
+    depends_on:
+      - cross-platform-messaging
+      - smart-ai-inbox
+      - one-click-reply
+      - voice-to-everything
+      - multilingual-auto-translate
+
+  cross-platform-messaging:
+    build: ./services/universal-communication-hub/cross-platform-messaging
+    ports:
+      - "8010:8010"
+
+  smart-ai-inbox:
+    build: ./services/universal-communication-hub/smart-ai-inbox
+    ports:
+      - "8011:8011"
+
+  one-click-reply:
+    build: ./services/universal-communication-hub/one-click-reply
+    ports:
+      - "8012:8012"
+
+  voice-to-everything:
+    build: ./services/universal-communication-hub/voice-to-everything
+    ports:
+      - "8013:8013"
+
+  multilingual-auto-translate:
+    build: ./services/universal-communication-hub/multilingual-auto-translate
+    ports:
+      - "8014:8014"
