@@ -1,26 +1,21 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-app = FastAPI(title="Cross-Platform Messaging Service")
+app = FastAPI(title="Multilingual Auto-Translate")
 
-# Temporary in-memory storage
-MESSAGES = []
+class TranslateRequest(BaseModel):
+    text: str
+    target_lang: str
 
 @app.get("/health")
-async def health():
-    return {"status": "ok", "service": "cross-platform-messaging"}
+def health():
+    return {"status": "ok", "service": "multilingual-auto-translate"}
 
-@app.get("/messages/inbox")
-async def inbox():
-    return {"messages": MESSAGES}
-
-@app.post("/messages/send")
-async def send_message(request: Request):
-    payload = await request.json()
-    message = {
-        "from": payload.get("from"),
-        "to": payload.get("to"),
-        "message": payload.get("message"),
+@app.post("/translate")
+def translate(req: TranslateRequest):
+    return {
+        "status": "ok",
+        "original": req.text,
+        "target_lang": req.target_lang,
+        "translated": f"[{req.text}] in {req.target_lang}"
     }
-    MESSAGES.append(message)
-    return {"status": "sent", **message}
